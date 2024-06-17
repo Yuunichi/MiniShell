@@ -73,7 +73,7 @@ int main(int argc, char **argv)
 			printf("Adios.\n");
 			exit(0);
 		}
-		exit;
+		//exit;
 
 	/* ESTA SECCION ESTA EN REVISION */
 		int i = 0;
