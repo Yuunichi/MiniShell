@@ -60,42 +60,38 @@ int main(int argc, char **argv)
 			{								
 				separarPepe(arr2[j], arr3); // Tokenizamos por |
 				int k = 0;
-				// Redireccion de la salida estandar al archivo tuberia.txt
-				int stdout_original = dup(STDOUT_FILENO);	// para restaurarla después
+				
+				int stdout_original = dup(STDOUT_FILENO);	// Para restaurarla stdout
 				int fd1 = open("tuberia.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				dup2(fd1,1);
-
+				dup2(fd1,1); 	// Redireccion de la salida estandar al archivo tuberia.txt
+				
 				memset(Pbuffer, '\0', sizeof(Pbuffer));  // Llena Pbuffer de caracteres NULL
 
 				while (arr3[k] != NULL)
 				{	
 					int pid = fork();
 					if (pid == 0)	// Hijo que ejecuta exec
-					{ 
-						close(fd1);
+					{
 						structArr(File, argv2, arr3[k]);
+						close(fd1);
 						execvp(File, argv2);
 						printf("%s No es un comando valido:\n", argv2[0]);
 						perror(NULL);
 						exit(-1);
 					}
+
 					k++;
 					wait(&status); // Estatus del ultimo comando ejecutado en los tokens de |
 					// Testing
 								
-					dup2(stdout_original, STDOUT_FILENO); // Restaura la salida estandar
-					close(stdout_original);				// Ya no es necesario, cerrramos
+					dup2(stdout_original, STDOUT_FILENO); 	// Restaura la salida estandar
+					close(stdout_original);					// Ya no es necesario, cerramos
 					
 					int fd2 = open("tuberia.txt", O_RDONLY );		// Abrimos el archivo para lectura
 					read(fd2, Pbuffer, sizeof(Pbuffer));			// y guardamos su contenido en Pbuffer
 					close(fd2);
 
-					if ( status == 0 ){
-						//int fd2 = open("tuberia.txt", O_RDONLY );		// Abrimos el archivo para lectura
-						//read(fd2, Pbuffer, sizeof(Pbuffer));			// y guardamos su contenido en Pbuffer
-						//close(fd2);
-					}
-					else {
+					if ( status != 0 ){
 						printf("%s\n" , Pbuffer);
 						memset(Pbuffer, '\0', sizeof(Pbuffer));  // Llena Pbuffer de caracteres NULL
 						close(fd1);
@@ -105,7 +101,6 @@ int main(int argc, char **argv)
 
 				printf("%s\n" , Pbuffer);
 				
-				//wait(&status);
 				if (status)
 				{ // Ejecuto el AND (&&), si el primero se ejecuto correctamente retorno 0 continuo con el segundo comando
 					break;
