@@ -16,7 +16,7 @@ void LeerCaracteres(char *cad)
 	cad[it] = '\0';
 }
 
-void structArr(char *File, char **argv2, char *inst)
+void structArr(char *File, char **argv2, char *inst, bool flag_pipe)
 {
 	strcpy(File, "");
 	strcat(File, strtok(inst, " "));
@@ -29,7 +29,16 @@ void structArr(char *File, char **argv2, char *inst)
 		argv2[i] = iterador;
 		++i;
 	}
-	argv2[i] = NULL;
+	if (flag_pipe)
+	{
+		argv2[i-1] = "tuberia.txt";
+		argv2[i] = NULL;
+	}
+	else
+	{
+		argv2[i] = NULL;
+	}
+
 }
 
 void separarOR(char *cadena, char **arr)
@@ -69,4 +78,23 @@ void separarPepe(char *cadena_tuberia, char **arr)
 		arr[i] = iterador;
 		++i;
 	}
+}
+
+void crear_copia(const char *file_name, int file_size)
+{
+
+	int file_fd = open(file_name, O_RDONLY);
+	int copy_fp = open("tuberia_copia.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+
+	char buffer[1024];
+
+	struct stat file_stat;
+	if (stat("tuberia.txt", &file_stat) == -1)
+		perror(NULL);
+
+	read(file_fd, buffer, file_size);
+	write(copy_fp, buffer, file_size);
+
+	close(file_fd);
+	close(copy_fp);
 }
