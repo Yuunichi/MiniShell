@@ -69,13 +69,12 @@ int main(int argc, char **argv)
 				
 				memset(Pbuffer, '\0', sizeof(Pbuffer)); 	// Llena Pbuffer de caracteres NULL
 
-				while (arr3[k] != NULL)
-				{	
+				while (arr3[k] != NULL){	
 					// - - - - - - - - - - - - - - - - - - - - - -
 					struct stat file_stat;
     				if (stat("tuberia.txt", &file_stat) == -1)
 						perror(NULL);
-					if ( k>0 &&  file_stat.st_size != 0 )
+					if ( (k>0 &&  file_stat.st_size != 0))
 						flag = true;
 					else
 						flag = false;
@@ -110,15 +109,14 @@ int main(int argc, char **argv)
 						fd1 = open("tuberia.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 					}
 
-					stat("tuberia.txt", &file_stat);
-					crear_copia("tuberia.txt", file_stat.st_size);
+
 				}
 
 				dup2(stdout_original, STDOUT_FILENO); 	// Restaura la salida estandar
 				close(stdout_original);
+					
+					printf("%s\n" , Pbuffer);
 
-				printf("%s\n" , Pbuffer);
-				
 				if (status)
 				{ // Ejecuto el AND (&&), si el primero se ejecuto correctamente retorno 0 continuo con el segundo comando
 					break;

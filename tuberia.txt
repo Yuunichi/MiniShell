@@ -1,12 +1,2 @@
-change_pipes.h
-LICENSE
-makefile
-minishell
-minishell.c
-minishell.h
-Proyecto #1 MiniShell.pdf
-README.md
-tuberia_copia.txt
-tuberia.txt
- 10  12 132 tuberia.txt
- 11  16 156 tuberia.txt
+/home/juanlps/Documentos/Sistemas Operativos Practico/Proyecto1/MiniShell
+ 1  3 74 tuberia.txt
